@@ -1,4 +1,7 @@
 const floors = [335, 270, 205, 140, 75];
+const floorsNPC = floors.map(function (x) {
+    return x + 15;
+});
 const ladders = [
     [180, 390],
     [80, 285, 495],
@@ -7,62 +10,13 @@ const ladders = [
 ];
 const borders = [35, 525];
 
-class Interactive {
+class MainClass {
     constructor(coords, images, direction = 'left') {
         this.direction = direction;
         this.images = images;
         this.coords = coords;
-    }
-}
-
-class NPC extends Interactive {
-    constructor(coords, images) {
-        super(coords, images);
-    }
-}
-
-class Player extends Interactive {
-    constructor(coords, images) {
-        super(coords, images);
-        //zmiana pozycji gracza - tablica
-        let that = this;
-        window.addEventListener('keypress', function (event) {
-            console.log(that);
-            switch (event.key) {
-                case 'a':
-                    if (that.coords[0] > borders[0] && that.leftAndRight()) {
-                        that.direction = 'left';
-                        console.log('a');
-                        that.coords[0] -= SPEED;
-                        console.log(that.coords[0]);
-                    }
-                    break;
-                case 'w':
-                    if (that.up()) {
-                        that.direction = 'up';
-                        console.log('w');
-                        that.coords[1] -= SPEED;
-                        console.log(that.coords[1]);
-                    }
-                    break;
-                case 'd':
-                    if (that.coords[0] < borders[1] && that.leftAndRight()) {
-                        that.direction = 'right';
-                        console.log('d');
-                        that.coords[0] += SPEED;
-                        console.log(that.coords[0]);
-                    }
-                    break;
-                case 's':
-                    if (that.down()) {
-                        that.direction = 'down';
-                        console.log('s');
-                        that.coords[1] += SPEED;
-                        console.log(that.coords[1]);
-                        break;
-                    }
-            }
-        });
+        this.start = coords;
+        this.speed = 5;
     }
 
     up() {
@@ -91,7 +45,6 @@ class Player extends Interactive {
     }
 
     down() {
-        console.log(floors[floors.length - 1]);
         let check = false;
         for (let i = 1; i < floors.length; ++i) {
             if (this.coords[1] === floors[i]) {
@@ -105,7 +58,7 @@ class Player extends Interactive {
             }
             else if (this.coords[1] < floors[i - 1] && this.coords[1] >= floors[i]) {
                 for (let j = 0; j < ladders[i - 1].length; ++j) {
-                    if (this.coords[0] === ladders[i-1][j]) {
+                    if (this.coords[0] === ladders[i - 1][j]) {
                         check = true;
                         break;
                     }
@@ -118,8 +71,8 @@ class Player extends Interactive {
 
     leftAndRight() {
         let check = false;
-        for(let i =0; i<floors.length; i++){
-            if(this.coords[1] === floors[i]) {
+        for (let i = 0; i < floors.length; i++) {
+            if (this.coords[1] === floors[i]) {
                 check = true;
                 break;
             }
@@ -133,5 +86,6 @@ class Ball {
         this.image = new Image();
         this.image.src = imageSrc;
         this.coords = coords;
+        this.intercepted = false;
     }
 }

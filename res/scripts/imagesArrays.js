@@ -31,3 +31,17 @@ ENEMY_IMAGE[1].src = 'res/img/enemy-right.png';
 
 ENEMY_IMAGE[2] = new Image();
 ENEMY_IMAGE[2].src = 'res/img/enemy-up.png';
+
+const playerImages = {
+    left1: PLAYER_IMAGE[0],
+    left2: PLAYER_IMAGE[1],
+    right1: PLAYER_IMAGE[2],
+    right2: PLAYER_IMAGE[3],
+    up1: PLAYER_IMAGE[4],
+    up2: PLAYER_IMAGE[5]
+};
+const enemyImages = {
+    left: ENEMY_IMAGE[0],
+    right: ENEMY_IMAGE[1],
+    up: ENEMY_IMAGE[2]
+};

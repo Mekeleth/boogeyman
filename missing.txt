@@ -1,7 +1,0 @@
-kolizje(sciany + gracze z botami)
-znikanie kuli
-pokazywanie wynikow 
-liczenie wynikow
-boty sledzenie hosta
-warunek przegranej
-ekran koncowy
