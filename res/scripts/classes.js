@@ -30,7 +30,7 @@ class Player extends Interactive {
             console.log(that);
             switch (event.key) {
                 case 'a':
-                    if (that.coords[0] > borders[0]) {
+                    if (that.coords[0] > borders[0] && that.leftAndRight()) {
                         that.direction = 'left';
                         console.log('a');
                         that.coords[0] -= SPEED;
@@ -46,7 +46,7 @@ class Player extends Interactive {
                     }
                     break;
                 case 'd':
-                    if (that.coords[0] < borders[1]) {
+                    if (that.coords[0] < borders[1] && that.leftAndRight()) {
                         that.direction = 'right';
                         console.log('d');
                         that.coords[0] += SPEED;
@@ -117,7 +117,14 @@ class Player extends Interactive {
     }
 
     leftAndRight() {
-
+        let check = false;
+        for(let i =0; i<floors.length; i++){
+            if(this.coords[1] === floors[i]) {
+                check = true;
+                break;
+            }
+        }
+        return check;
     }
 }
 
