@@ -15,7 +15,6 @@ class MainClass {
         this.direction = direction;
         this.images = images;
         this.coords = coords;
-        this.start = coords;
         this.speed = 5;
     }
 

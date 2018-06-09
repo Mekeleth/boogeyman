@@ -43,5 +43,6 @@ const playerImages = {
 const enemyImages = {
     left: ENEMY_IMAGE[0],
     right: ENEMY_IMAGE[1],
-    up: ENEMY_IMAGE[2]
+    up: ENEMY_IMAGE[2],
+    down: ENEMY_IMAGE[2]
 };

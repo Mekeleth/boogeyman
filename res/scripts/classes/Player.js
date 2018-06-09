@@ -8,33 +8,33 @@ class Player extends MainClass {
                 case 'a':
                     if (that.coords[0] > borders[0] && that.leftAndRight()) {
                         that.direction = 'left';
-                        console.log('a');
+                        // console.log('a');
                         that.coords[0] -= that.speed;
-                        console.log(that.coords[0]);
+                        // console.log(that.coords[0]);
                     }
                     break;
                 case 'w':
                     if (that.up()) {
                         that.direction = 'up';
-                        console.log('w');
+                        // console.log('w');
                         that.coords[1] -= that.speed;
-                        console.log(that.coords[1]);
+                        // console.log(that.coords[1]);
                     }
                     break;
                 case 'd':
                     if (that.coords[0] < borders[1] && that.leftAndRight()) {
                         that.direction = 'right';
-                        console.log('d');
+                        // console.log('d');
                         that.coords[0] += that.speed;
-                        console.log(that.coords[0]);
+                        // console.log(that.coords[0]);
                     }
                     break;
                 case 's':
                     if (that.down()) {
                         that.direction = 'down';
-                        console.log('s');
+                        // console.log('s');
                         that.coords[1] += that.speed;
-                        console.log(that.coords[1]);
+                        // console.log(that.coords[1]);
                         break;
                     }
             }

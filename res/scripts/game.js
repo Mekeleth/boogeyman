@@ -1,10 +1,7 @@
-function start() {
-    let c = document.getElementById('canvas');
-    let ctx = c.getContext('2d');
-
+function start(ctx) {
     let kod = 'a';
 
-    let bonus = 2000;
+    let bonus = 1200;
     let men = 4;
     let score = 0;
     let highestScore = 0;
@@ -13,9 +10,8 @@ function start() {
     let enemy1 = new NPC([100, 90], enemyImages);
     let enemy2 = new NPC([200, 90], enemyImages);
     let ball = new Ball('res/img/ball.png', [60, 90]);
-    let OPENING = document.getElementById('opening');
-    ctx.drawImage(OPENING, 0, 0);
-
+    ctx.fillStyle = 'white';
+    ctx.font = '13pt Courier bold';
     draw(bonus, men, score, highestScore, kod, ctx, player, ball, enemy1, enemy2);
 }
 
@@ -30,17 +26,24 @@ function playerDraw(ctx, player, direction, axis) {
 function draw(bonus, men, score, highestScore, kod, ctx, player, ball, enemy1, enemy2) {
     window.addEventListener('keypress', function (event) {
         kod = event.key;
-        if (event.code === 'Space') {
-            ctx.clearRect(0, 0, 600, 440);
-        }
     });
     let img = document.getElementById('plansza');
+    let scoreCheck = false;
+    let found1, found2;
     let game = setInterval(function () {
+        if (bonus) --bonus;
+
         ctx.clearRect(0, 0, 600, 440);
         ctx.drawImage(img, 0, 0);
+        ctx.fillText(bonus, 85, 85);
+        ctx.fillText(men, 235, 85);
+        ctx.fillText(highestScore, 350, 85);
+        ctx.fillText(score, 500, 85);
         ctx.drawImage(ball.image, ball.coords[0], ball.coords[1]);
-        enemy1.move();
-        enemy2.move();
+        found1 = enemy1.seePlayer(player, found1);
+        found2 = enemy2.seePlayer(player, found2);
+        enemy1.trackPlayer(found1);
+        enemy2.trackPlayer(found2);
         ctx.drawImage(enemy1.currentImage, enemy1.coords[0], enemy1.coords[1]);
         ctx.drawImage(enemy2.currentImage, enemy2.coords[0], enemy2.coords[1]);
         switch (kod) {
@@ -69,22 +72,39 @@ function draw(bonus, men, score, highestScore, kod, ctx, player, ball, enemy1, e
         }
 
         if (player.coords[0] === ball.coords[0] && player.coords[1] === floors[4]) {
-            console.log('ok');
             ball.image.src = '';
             ball.intercepted = true;
         }
 
-        if(ball.intercepted && player.coords[0] === borders[1] && player.coords[1] === floors[0]) {
-            console.log('WIN!');
-            score += 200+bonus;
+        if (ball.intercepted && !scoreCheck) {
+            scoreCheck = true;
+            score += 200;
+        }
+
+        if (ball.intercepted && player.coords[0] === borders[1] && player.coords[1] === floors[0]) {
             clearInterval(game);
+            score += bonus;
+            console.log('WIN!', score);
+            enemy1.coords = [100, 90];
+            enemy2.coords = [200, 90];
+            enemy1.direction = enemy2.direction = 'left';
             ball.image.src = 'res/img/ball.png';
             ball.intercepted = false;
-            draw(2000, men, score, highestScore, 'a', ctx, player, ball, enemy1, enemy2);
+            scoreCheck = false;
+            draw(1200, men, score, highestScore, 'a', ctx, player, ball, enemy1, enemy2);
         }
     }, 1000 / 24);
 }
 
 window.onload = function () {
-    start();
+    let ctx = document.getElementById('canvas').getContext('2d');
+    let OPENING = document.getElementById('opening');
+    ctx.drawImage(OPENING, 0, 0);
+    const startGame = (event) => {
+        if (event.code === 'Space') {
+            document.removeEventListener('keydown', startGame);
+            start(ctx);
+        }
+    };
+    document.addEventListener('keydown', startGame);
 };
