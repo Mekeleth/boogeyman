@@ -81,12 +81,14 @@ function draw(bonus, men, score, highestScore, kod, ctx, player, ball, enemy1, e
             score += 200;
         }
 
+        killPLayer(player, game, men, [enemy1, enemy2], ball, scoreCheck, score, highestScore, ctx);
+
         if (ball.intercepted && player.coords[0] === borders[1] && player.coords[1] === floors[0]) {
             clearInterval(game);
             score += bonus;
             console.log('WIN!', score);
-            enemy1.coords = [100, 90];
-            enemy2.coords = [200, 90];
+            enemy1.coords = [100, 85];
+            enemy2.coords = [200, 85];
             enemy1.direction = enemy2.direction = 'left';
             ball.image.src = 'res/img/ball.png';
             ball.intercepted = false;
@@ -94,6 +96,41 @@ function draw(bonus, men, score, highestScore, kod, ctx, player, ball, enemy1, e
             draw(1200, men, score, highestScore, 'a', ctx, player, ball, enemy1, enemy2);
         }
     }, 1000 / 24);
+}
+
+function killPLayer(player, game, men, enemies, ball, scoreCheck, score, highestScore, ctx) {
+    enemies.forEach(function (el) {
+        if (enemyInRange(el, player)) {
+            clearInterval(game);
+            if (men) {
+                --men;
+                setTimeout(function () {
+                    player.coords = [490, 335];
+                    enemies[0].coords = [100, 85];
+                    enemies[1].coords = [200, 85];
+                    enemies[0].direction = enemies[1].direction = player.direction = 'left';
+                    ball.image.src = 'res/img/ball.png';
+                    ball.intercepted = false;
+                    scoreCheck = false;
+                    draw(1200, men, score, highestScore, 'a', ctx, player, ball, enemies[0], enemies[1]);
+                }, 2000);
+            }
+            else {
+                gameOver();
+            }
+        }
+    })
+}
+
+function enemyInRange(e, p) {
+    return (e.coords[0] - 30 <= p.coords[0] &&
+        e.coords[0] + 30 >= p.coords[0] &&
+        e.coords[1] - 35 <= p.coords[1] &&
+        e.coords[1] + 10 >= p.coords[1]);
+}
+
+function gameOver() {
+    console.log('gameover!');
 }
 
 window.onload = function () {

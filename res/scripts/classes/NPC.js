@@ -6,7 +6,7 @@ class NPC extends MainClass {
         this.previouslyVisible = false;
         this.previousHorizontalDirection = this.direction;
         this.currentImage = this.images.left;
-        this.speed = this.speed/2;
+        this.speed = this.speed - 2.5;
     }
 
     trackPlayer(playerX) {
@@ -16,9 +16,7 @@ class NPC extends MainClass {
                     this.previouslyVisible = false;
                     this.defaultMove = true;
                     let check = true;
-                    console.log(this.floor, this.getFloor());
                     if (this.floor < ladders.length) {
-                        console.log(this.floor, ladders.length);
                         for (let j = 0; j < ladders[this.floor].length; ++j) {
                             if (this.coords[0] === ladders[this.floor][j]) {
                                 this.direction = 'up';
@@ -29,7 +27,6 @@ class NPC extends MainClass {
                         }
                     }
                     else if (check) {
-                        console.log(check);
                         for (let j = 0; j < ladders[this.floor - 1].length; ++j) {
                             if (this.coords[0] === ladders[this.floor - 1][j]) {
                                 this.direction = 'down';
@@ -108,16 +105,16 @@ class NPC extends MainClass {
                 else this.coords[0] += this.speed;
                 break;
             case 'up':
-                if(this.up(floorsNPC))
-                this.coords[1] -= this.speed;
+                if (this.up(floorsNPC))
+                    this.coords[1] -= this.speed;
                 else {
                     this.direction = this.previousHorizontalDirection;
                     this.move();
                 }
                 break;
             case 'down':
-                if(this.down(floorsNPC))
-                this.coords[1] += this.speed;
+                if (this.down(floorsNPC))
+                    this.coords[1] += this.speed;
                 else {
                     this.direction = this.previousHorizontalDirection;
                     this.move();
@@ -146,7 +143,6 @@ class NPC extends MainClass {
 
     getFloor() {
         for (let i = 0; i < floorsNPC.length; ++i) {
-            console.log(this.coords[1], floorsNPC[i]);
             if (this.coords[1] === floorsNPC[i]) return i;
         }
     }
