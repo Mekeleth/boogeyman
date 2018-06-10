@@ -1,23 +1,24 @@
 class NPC extends MainClass {
     constructor(coords, images) {
         super(coords, images);
+        this.defaultMove = true;
         this.playerVisible = false;
         this.previouslyVisible = false;
         this.previousHorizontalDirection = this.direction;
         this.currentImage = this.images.left;
-        this.speed = this.speed;
+        this.speed = this.speed/2;
     }
 
     trackPlayer(playerX) {
-        // console.log(playerX,boolean);
         if (playerX) {
             if (!this.playerVisible) {
-                // console.log(this.coords[0], playerX);
                 if (this.coords[0] === playerX) {
                     this.previouslyVisible = false;
-                    // console.log('ladder here?');
+                    this.defaultMove = true;
                     let check = true;
+                    console.log(this.floor, this.getFloor());
                     if (this.floor < ladders.length) {
+                        console.log(this.floor, ladders.length);
                         for (let j = 0; j < ladders[this.floor].length; ++j) {
                             if (this.coords[0] === ladders[this.floor][j]) {
                                 this.direction = 'up';
@@ -28,6 +29,7 @@ class NPC extends MainClass {
                         }
                     }
                     else if (check) {
+                        console.log(check);
                         for (let j = 0; j < ladders[this.floor - 1].length; ++j) {
                             if (this.coords[0] === ladders[this.floor - 1][j]) {
                                 this.direction = 'down';
@@ -106,17 +108,28 @@ class NPC extends MainClass {
                 else this.coords[0] += this.speed;
                 break;
             case 'up':
+                if(this.up(floorsNPC))
                 this.coords[1] -= this.speed;
+                else {
+                    this.direction = this.previousHorizontalDirection;
+                    this.move();
+                }
                 break;
             case 'down':
+                if(this.down(floorsNPC))
                 this.coords[1] += this.speed;
+                else {
+                    this.direction = this.previousHorizontalDirection;
+                    this.move();
+                }
         }
     }
 
     seePlayer(player, previousCoords) {
-        if (this.coords[1] - 15 === player.coords[1]) {
+        if (this.coords[1] - 10 === player.coords[1]) {
             if ((this.direction === 'left' && this.coords[0] > player.coords[0]) || (this.direction === 'right' && this.coords[0] < player.coords[0])) {
                 this.playerVisible = true;
+                this.defaultMove = false;
                 return player.coords[0];
             }
         }
@@ -125,7 +138,7 @@ class NPC extends MainClass {
             this.previouslyVisible = true;
             return player.coords[0];
         }
-        else if (this.previouslyVisible) {
+        else if (this.previouslyVisible && !this.defaultMove) {
             return previousCoords;
         }
         return false;
@@ -133,6 +146,7 @@ class NPC extends MainClass {
 
     getFloor() {
         for (let i = 0; i < floorsNPC.length; ++i) {
+            console.log(this.coords[1], floorsNPC[i]);
             if (this.coords[1] === floorsNPC[i]) return i;
         }
     }

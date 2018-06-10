@@ -14,7 +14,7 @@ class Player extends MainClass {
                     }
                     break;
                 case 'w':
-                    if (that.up()) {
+                    if (that.up(floors)) {
                         that.direction = 'up';
                         // console.log('w');
                         that.coords[1] -= that.speed;
@@ -30,7 +30,7 @@ class Player extends MainClass {
                     }
                     break;
                 case 's':
-                    if (that.down()) {
+                    if (that.down(floors)) {
                         that.direction = 'down';
                         // console.log('s');
                         that.coords[1] += that.speed;

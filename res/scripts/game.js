@@ -7,8 +7,8 @@ function start(ctx) {
     let highestScore = 0;
 
     let player = new Player([490, 335], playerImages);
-    let enemy1 = new NPC([100, 90], enemyImages);
-    let enemy2 = new NPC([200, 90], enemyImages);
+    let enemy1 = new NPC([100, 85], enemyImages);
+    let enemy2 = new NPC([200, 85], enemyImages);
     let ball = new Ball('res/img/ball.png', [60, 90]);
     ctx.fillStyle = 'white';
     ctx.font = '13pt Courier bold';

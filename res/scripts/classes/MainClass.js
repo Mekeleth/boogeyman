@@ -1,6 +1,6 @@
 const floors = [335, 270, 205, 140, 75];
 const floorsNPC = floors.map(function (x) {
-    return x + 15;
+    return x + 10;
 });
 const ladders = [
     [180, 390],
@@ -18,7 +18,7 @@ class MainClass {
         this.speed = 5;
     }
 
-    up() {
+    up(floors) {
         let check = false;
         for (let i = 0; i < floors.length - 1; ++i) {
             if (this.coords[1] === floors[i]) {
@@ -43,7 +43,7 @@ class MainClass {
         return check;
     }
 
-    down() {
+    down(floors) {
         let check = false;
         for (let i = 1; i < floors.length; ++i) {
             if (this.coords[1] === floors[i]) {
