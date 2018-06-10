@@ -1,2 +1,2 @@
-img{position:absolute;z-index:1;visibility:hidden}
+@font-face{font-family:'commodore64';src:url("../commodore font/commodore_pixelized_v1.2-webfont.woff2") format("woff2"),url("../commodore font/commodore_pixelized_v1.2-webfont.woff") format("woff"),url("../commodore font/commodore_pixelized_v1.2.ttf") format("truetype");font-weight:normal;font-style:normal}*{box-sizing:border-box}* body{width:100%;font-family:'commodore64'}#canvas{left:50%;transform:translateX(-50%);position:relative}img{position:absolute;z-index:1;visibility:hidden}
 /*# sourceMappingURL=styles.min.css.map */

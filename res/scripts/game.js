@@ -11,7 +11,7 @@ function start(ctx) {
     let enemy2 = new NPC([200, 85], enemyImages);
     let ball = new Ball('res/img/ball.png', [60, 90]);
     ctx.fillStyle = 'white';
-    ctx.font = '13pt Courier bold';
+    ctx.font = '13pt commodore64';
     draw(bonus, men, score, highestScore, kod, ctx, player, ball, enemy1, enemy2);
 }
 
@@ -35,7 +35,7 @@ function draw(bonus, men, score, highestScore, kod, ctx, player, ball, enemy1, e
 
         ctx.clearRect(0, 0, 600, 440);
         ctx.drawImage(img, 0, 0);
-        ctx.fillText(bonus, 85, 85);
+        ctx.fillText(bonus, 78, 85);
         ctx.fillText(men, 235, 85);
         ctx.fillText(highestScore, 350, 85);
         ctx.fillText(score, 500, 85);
