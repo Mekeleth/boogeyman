@@ -2,9 +2,9 @@ function start(ctx) {
     let kod = 'a';
 
     let bonus = 1200;
-    let men = 4;
+    let men = 0;
     let score = 0;
-    let highestScore = 0;
+    let highestScore = localStorage.getItem(`winner1`) ? JSON.parse(localStorage.getItem(`winner1`)).score : 0;
 
     let player = new Player([490, 335], playerImages);
     let enemy1 = new NPC([100, 85], enemyImages);
@@ -86,7 +86,6 @@ function draw(bonus, men, score, highestScore, kod, ctx, player, ball, enemy1, e
         if (ball.intercepted && player.coords[0] === borders[1] && player.coords[1] === floors[0]) {
             clearInterval(game);
             score += bonus;
-            console.log('WIN!', score);
             enemy1.coords = [100, 85];
             enemy2.coords = [200, 85];
             enemy1.direction = enemy2.direction = 'left';
@@ -116,7 +115,9 @@ function killPLayer(player, game, men, enemies, ball, scoreCheck, score, highest
                 }, 2000);
             }
             else {
-                gameOver();
+                setTimeout(function () {
+                    gameOver(ctx, score);
+                }, 2000);
             }
         }
     })
@@ -129,8 +130,94 @@ function enemyInRange(e, p) {
         e.coords[1] + 10 >= p.coords[1]);
 }
 
-function gameOver() {
-    console.log('gameover!');
+function gameOver(ctx, score) {
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, 600, 440);
+    ctx.font = '13pt commodore64';
+    if (typeof(Storage) !== 'undefined') {
+        let numberOfWinners;
+        for (let i = 1; i <= 10; ++i) {
+            if (!localStorage.getItem(`winner${i}`)) {
+                numberOfWinners = i - 1;
+                break;
+            }
+        }
+        if (numberOfWinners === 10 && score < parseInt(localStorage.getItem(`winner${numberOfWinners}`).score)) {
+            displayHallOfFame(ctx);
+        }
+        else {
+            ctx.fillStyle = 'green';
+            ctx.fillText('*******   WELL DONE!   *******', 100, 50);
+            ctx.fillText('YOU ARE IN THE HALL OF FAME.', 100, 90);
+            ctx.fillText('PLEASE ENTER YOUR NAME BELOW.', 100, 130);
+            ctx.fillStyle = 'white';
+            ctx.fillText('PRESS "ENTER" TO ENTER A CHARACTER', 100, 170);
+            ctx.fillText('MAX. LENGTH 10 CHARACTERS', 100, 210);
+
+            let playerName = '';
+
+            document.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    let playerData = {
+                        name: playerName,
+                        score: score
+                    };
+                    localStorage.setItem(`winner${numberOfWinners + 1}`, JSON.stringify(playerData));
+                    if(numberOfWinners > 1){
+                        for (let i = 1; i <= numberOfWinners; ++i) {
+                            if (JSON.parse(localStorage.getItem(`winner${i + 1}`)).score > JSON.parse(localStorage.getItem(`winner${i}`)).score) {
+                                let pom = localStorage.getItem(`winner${i + 1}`);
+                                localStorage.setItem(`winner${i + 1}`, localStorage.getItem(`winner${i}`));
+                                localStorage.setItem(`winner${i}`, pom);
+                                i = 0;
+                            }
+                        }
+                    }
+                    displayHallOfFame(ctx);
+                }
+                else if (playerName.length < 10) {
+                    playerName += e.key;
+                    ctx.fillText(playerName, 100, 270);
+                }
+            });
+        }
+    }
+    else {
+        ctx.fillStyle = 'white';
+        ctx.fillText('Unable to save data! Make sure your browser supports localStorage.', 50, 90);
+    }
+}
+
+function displayHallOfFame(ctx) {
+    let hall = [];
+    for (let i = 1; i <= 10; ++i) {
+        let item = localStorage.getItem(`winner${i}`);
+        if (item) hall.push(JSON.parse(item));
+        else break;
+    }
+    console.log(hall);
+    const space = 30;
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, 600, 440);
+    ctx.fillStyle = 'white';
+    ctx.font = '40pt commodore64';
+    ctx.fillText('Hall Of Fame', 50, 80);
+    ctx.font = '15pt commodore64';
+    let yAxis = 130;
+    hall.forEach(function (el, i) {
+        ctx.fillStyle = getRandomColor();
+        ctx.fillText(`${i + 1}.    ${el.score}. . . . .${el.name}`, 100, yAxis);
+        yAxis += space;
+    });
+}
+
+function getRandomColor() {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }
 
 window.onload = function () {
