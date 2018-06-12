@@ -2,7 +2,7 @@ function start(ctx) {
     let kod = 'a';
 
     let bonus = 1200;
-    let men = 0;
+    let men = 4;
     let score = 0;
     let highestScore = localStorage.getItem(`winner1`) ? JSON.parse(localStorage.getItem(`winner1`)).score : 0;
 
